@@ -46,9 +46,18 @@
           </label>
         </div>
         
-        <p class="file-count" v-if="files.length > 0">
-          {{ files.length }} file(s) ready for extraction.
-        </p>
+        <!-- Image Accumulator List -->
+        <div v-if="files.length > 0" class="file-list">
+          <p class="file-count">📸 {{ files.length }} image(s) ready in batch:</p>
+          <ul>
+            <li v-for="(file, index) in files" :key="index" class="file-item">
+              <span class="file-name">📄 Image {{ index + 1 }}</span>
+              <button type="button" class="remove-btn" @click="removeFile(index)" title="Remove image">
+                ✖
+              </button>
+            </li>
+          </ul>
+        </div>
       </div>
 
       <!-- Human Verification (Math CAPTCHA) -->
@@ -111,7 +120,22 @@ onMounted(() => {
 });
 
 const handleFileUpload = (event) => {
-  files.value = Array.from(event.target.files);
+  const newFiles = Array.from(event.target.files);
+  
+  if (scanType.value === 'single') {
+    // Single mode: always replace with exactly one file
+    files.value = newFiles.slice(0, 1);
+  } else {
+    // Multi mode: append the new pictures to the existing batch
+    files.value = [...files.value, ...newFiles];
+  }
+  
+  // Clear the input value so the browser registers subsequent shots from the camera
+  event.target.value = '';
+};
+
+const removeFile = (index) => {
+  files.value.splice(index, 1);
 };
 
 const submitScan = async () => {
@@ -143,12 +167,14 @@ const submitScan = async () => {
   });
 
   try {
+    // Endpoint uses Vercel rewrite configuration (vercel.json) to proxy to Render
     const endpoint = '/api/submit-scan';
 
     const response = await fetch(endpoint, {
       method: 'POST',
       body: formData, 
     });
+
     const data = await response.json();
 
     if (!response.ok) throw new Error(data.error || 'Server error');
@@ -220,6 +246,45 @@ input, select {
   font-size: 0.9rem;
   color: #42b883;
   font-weight: bold;
+}
+.file-list {
+  margin-top: 1rem;
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 6px;
+}
+.file-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0 0;
+}
+.file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+.file-name {
+  font-size: 0.9rem;
+  color: #495057;
+}
+.remove-btn {
+  background: #ff4757;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.8rem;
+  padding: 0;
 }
 .captcha-group {
   background-color: #f8f9fa;
