@@ -1,8 +1,10 @@
+require('dotenv').config(); // MUST BE LINE 1
+
 const express = require('express');
 const multer = require('multer');
 const { createClient } = require('@supabase/supabase-js');
 const { v4: uuidv4 } = require('uuid');
-const Tesseract = require('tesseract.js'); 
+const Tesseract = require('tesseract.js');
 
 const app = express();
 app.use(express.json());
