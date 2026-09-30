@@ -61,6 +61,15 @@ const handleFileUpload = (event) => {
 };
 
 const submitScan = async () => {
+
+  // Use the production Render URL if available, otherwise fallback to local proxy
+  const baseUrl = import.meta.env.VITE_API_BASE_URL || '';
+  const endpoint = `${baseUrl}/api/submit-scan`;
+
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    body: formData, 
+  });
   isSubmitting.value = true;
   resultText.value = '';
   statusMessage.value = '';
