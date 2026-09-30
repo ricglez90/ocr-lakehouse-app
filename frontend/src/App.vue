@@ -143,7 +143,7 @@ const submitScan = async () => {
   });
 
   try {
-    const baseUrl = import.meta.env.VITE_API_BASE_URL || '';
+    const baseUrl = import.meta.env.API_BASE_URL || '';
     const endpoint = `${baseUrl}/api/submit-scan`;
 
     const response = await fetch(endpoint, {
