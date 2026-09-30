@@ -1,0 +1,28 @@
+# Environment & Secrets
+.env
+.env.local
+*.pem
+*.key
+
+# Dependencies
+node_modules/
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.venv/
+
+# Build outputs
+dist/
+build/
+.vercel
+
+# Testing & Logs
+.pytest_cache/
+coverage/
+*.log
+npm-debug.log*
+
+# Databricks local artifacts
+.databricks/
+dbfs/
