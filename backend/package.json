@@ -1,0 +1,14 @@
+{
+  "scripts": {
+  "start": "node src/index.js"
+},
+  "dependencies": {
+    "@supabase/supabase-js": "^2.117.2",
+    "express": "^5.2.1",
+    "multer": "^2.4.0",
+    "tesseract.js": "^7.0.0",
+    "uuid": "^14.0.2"
+  }
+
+
+}
