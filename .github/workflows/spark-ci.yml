@@ -1,0 +1,44 @@
+# .github/workflows/spark-ci.yml
+name: Databricks PySpark CI
+
+# Trigger this workflow on pushes to main, or any Pull Request
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test-transformations:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Pull the repository code into the runner
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # 2. Install the correct Python environment
+      - name: Setup Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      # 3. Install Java (Required for the PySpark JVM)
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'corretto'
+          java-version: '11'
+
+      # 4. Install test dependencies
+      - name: Install PySpark and Pytest
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyspark==3.4.1 pytest==7.4.0
+
+      # 5. Execute the test suite
+      - name: Run PySpark Unit Tests
+        run: |
+          pytest tests/
