@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://ocr-lakehouse-app.onrender.com/api/:path*"
+    }
+  ]
+}
