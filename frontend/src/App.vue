@@ -144,7 +144,7 @@ const submitScan = async () => {
 
   try {
     const baseUrl = import.meta.env.API_BASE_URL || '';
-    const endpoint = `${baseUrl}/api/submit-scan`;
+    const endpoint = `https://ocr-lakehouse-app.onrender.com//api/submit-scan`;
 
     const response = await fetch(endpoint, {
       method: 'POST',
